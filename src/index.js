@@ -2,9 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser')
 const app = express();
-const request = require('request-promise-native')
 const db = require('./services/db')
-
+const leetcodeRoutes = require('./routes/leetcodeRoutes');
 
 
 
@@ -18,19 +17,8 @@ app.use((req, res, next) => {
     next();
   });
 
-app.post('/',urlencodedParser, (req, res) => {
-    const receivedData = req.body; // Extract the data from the request body
-    const slug = receivedData.slug
-    const url = 'https://leetcode.com/graphql?query={%20question(titleSlug:%20%22' + slug + '%22)%20{%20questionId%20questionFrontendId%20title%20titleSlug%20isPaidOnly%20difficulty%20likes%20dislikes%20}%20}';
-    
-    axios.get(url)
-    .then(response => {
-        res.send(response.data)
-    })
-    .catch(error => {
-        res.status(500).json({ error: 'An error occurred while fetching data from LeetCode API.' });
-    });
-});
+app.use('/leetcode', leetcodeRoutes);
+
 
 
 app.post('/solved',urlencodedParser, async (req, res) => {
