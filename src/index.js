@@ -3,7 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser')
 const app = express();
 const request = require('request-promise-native')
-const insertDataIntoMongoDB = require('../src/services/insert')
+const db = require('./services/db')
 
 
 
@@ -44,8 +44,8 @@ app.post('/solved',urlencodedParser, async (req, res) => {
   
   });
 
-app.get('/create',urlencodedParser, async (req, res) => {
-  insertDataIntoMongoDB.insertDataIntoMongoDB();
+app.post('/create',urlencodedParser, async (req, res) => {
+  db.insertSingle(req.body)
 });
 
 
