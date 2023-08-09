@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const app = express();
 const db = require('./services/db')
 const leetcodeRoutes = require('./routes/leetcodeRoutes');
-
+const dbRoutes = require('./routes/dbRoutes');
 
 
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   });
 
 app.use('/leetcode', leetcodeRoutes);
-
+app.use('/db', dbRoutes);
 
 
 app.post('/solved',urlencodedParser, async (req, res) => {
@@ -29,12 +29,7 @@ app.post('/solved',urlencodedParser, async (req, res) => {
   .then(response => {
         res.send(response.data)
     })
-  
   });
-
-app.post('/create',urlencodedParser, async (req, res) => {
-  db.insertSingle(req.body)
-});
 
 
 const port = 3000;

@@ -22,7 +22,7 @@ async function connectToMongoDB() {
 
  async function insertSingle(val) {
   const db = await connectToMongoDB();
-  const usersCollection = db.collection('users')
+  const usersCollection = db.collection('solved')
   const insertResult = await usersCollection.insertOne(val);
   console.log('Inserted IDs:', insertResult.insertedIds);
   db.client.close();
@@ -31,12 +31,16 @@ async function connectToMongoDB() {
 
 async function insertMultiple(arr) {
   const db = await connectToMongoDB();
+  const usersCollection = db.collection('users')
   const insertManyResult = await usersCollection.insertMany(arr);
   console.log('Inserted IDs:', insertManyResult.insertedIds);
   db.client.close();
 }
 
+function create(req, res) {
+  insertSingle(req.body)
+}
+
 module.exports = {
-  insertSingle,
-  insertMultiple,
+  create,
 };
